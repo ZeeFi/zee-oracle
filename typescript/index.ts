@@ -1,10 +1,14 @@
-import { AptosAccount, HexString, Types } from "aptos";
+import { AptosAccount, BCS, HexString, TxnBuilderTypes, Types } from "aptos";
 import * as fs from "fs";
 import * as yaml from "yaml";
 import { u8, strToU8, payloadArg, u8ArrayArg } from "./builtinFuncs";
 
 import { AptosClient, FaucetClient } from "aptos";
 import { U8 } from "./builtinTypes";
+import {
+  EntryFunction,
+  RawTransaction,
+} from "aptos/dist/transaction_builder/aptos_types";
 
 export async function sendPayloadTx(
   client: AptosClient,
@@ -69,6 +73,48 @@ export function buildPayload(
   };
 }
 
+export const payload = async () => {
+  const name_: U8[] = strToU8("Eth Oracle");
+
+  const serializer = new BCS.Serializer();
+  serializer.serializeFixedBytes(Buffer.from("test"));
+
+  const { client, account } = readConfig();
+  const scriptFunctionPayload =
+    new TxnBuilderTypes.TransactionPayloadEntryFunction(
+      EntryFunction.natural(
+        // Fully qualified module name, `AccountAddress::ModuleName`
+        "0xce938e214d7b44a98a9acf23ecc1b507e453c143d1026a935834271df6f5f07e::tokens",
+        // Module function
+        "initialize",
+        // The coin type to transfer
+        [],
+        // Arguments for function `transfer`: receiver account address and amount to transfer
+        //[BCS.bcsSerializeU8(1), BCS.bcsSerializeBytes(Buffer.from("test"))]
+        [BCS.bcsSerializeU8(1), BCS.bcsSerializeStr("Eth Oracle")]
+      )
+    );
+
+  // Create a raw transaction out of the transaction payload
+  const rawTxn = await client.generateRawTransaction(
+    account.address(),
+    scriptFunctionPayload,
+    { maxGasAmount: 1000n, gastUnitPrice: 2n }
+  );
+
+  // Sign the raw transaction with Alice's private key
+  const bcsTxn = AptosClient.generateBCSTransaction(account, rawTxn);
+  // Submit the transaction
+  const transactionRes = await client.submitSignedBCSTransaction(bcsTxn);
+
+  // Wait for the transaction to finish
+  await client.waitForTransaction(transactionRes.hash);
+  const txDetails = (await client.getTransactionByHash(
+    transactionRes.hash
+  )) as Types.UserTransaction;
+  console.log(txDetails);
+};
+
 export const readConfig = () => {
   const ymlContent = fs.readFileSync("../.aptos/config.yaml", {
     encoding: "utf-8",
@@ -96,7 +142,8 @@ export const readConfig = () => {
 };
 
 const main = async () => {
-  tokens_intialize("0", "Eth Oracle");
+  //tokens_intialize("0", "Eth Oracle");
+  await payload();
 };
 
 if (require.main === module) {

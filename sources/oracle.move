@@ -5,6 +5,8 @@ module oracle::tokens{
 
     use std::error;
     use std::signer;
+    use std::debug;
+    use std::string;
 
 
     const ENOT_INITIALZIED : u64 = 1;
@@ -13,20 +15,18 @@ module oracle::tokens{
 
     struct Aggregator has key {
         id : u8,
-        name : vector<u8>,
+        name : string::String,
         token_details_list :  vector<TokenDetails>
     } 
 
     struct TokenDetails has store, copy {
         price : u128,
         decimals : u8,
-        last_update : vector<u8>,
+        last_update : string::String,
     }
 
 
     //struct Last
-
-
     fun initialize_(sender : &signer, id : u8, name : vector<u8> ) {
         let admin_addr = config::ADMIN_ADDRESS();
 
@@ -35,14 +35,23 @@ module oracle::tokens{
 
         move_to (sender, Aggregator {
             id : id,
-            name : name ,
+            name : string::utf8(name) ,
             token_details_list : vector::empty()
         });
 
     }
 
+    public entry fun test() {
+       // debug::print(sender);
+    }
+
+    public entry fun testy(sender : &signer) {
+        debug::print(sender);
+    }
+
+
     #[cmd]
-    public entry fun intialize(sender : &signer, id : u8, name : vector<u8>) {
+    public entry fun initialize(sender : &signer, id : u8, name : vector<u8>) {
         initialize_(sender, id, name);
     }
 
@@ -59,7 +68,7 @@ module oracle::tokens{
         let token_details = TokenDetails {
             price : price, 
             decimals : decimals,
-            last_update : last_update
+            last_update : string::utf8(last_update)
         };
 
         let token_details_list = &mut aggregator.token_details_list;
@@ -72,7 +81,7 @@ module oracle::tokens{
     }
 
     #[cmd]
-    public entry fun get_feed() : (u128, u8, vector<u8>) acquires  Aggregator {
+    public entry fun get_feed() : (u128, u8, string::String) acquires  Aggregator {
         let admin_addr = config::ADMIN_ADDRESS();
 
 
@@ -90,7 +99,7 @@ module oracle::tokens{
            (token_details.price, token_details.decimals, token_details.last_update)
 
         } else {
-             (0 , 0, b"0")
+             (0 , 0,  string::utf8(b"0"))
         }
     }
 
