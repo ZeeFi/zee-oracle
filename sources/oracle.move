@@ -17,7 +17,7 @@ module oracle::tokens{
         token_details_list :  vector<TokenDetails>
     } 
 
-    struct TokenDetails has store {
+    struct TokenDetails has store, copy {
         price : u128,
         decimals : u8,
         last_update : vector<u8>,
@@ -41,7 +41,8 @@ module oracle::tokens{
 
     }
 
-    public fun intialize(sender : &signer, id : u8, name : vector<u8>) {
+    #[cmd]
+    public entry fun intialize(sender : &signer, id : u8, name : vector<u8>) {
         initialize_(sender, id, name);
     }
 
@@ -66,10 +67,49 @@ module oracle::tokens{
     }
 
     #[cmd]
-    public fun add_feed(sender : &signer, price : u128, decimals : u8, last_update : vector<u8>) acquires Aggregator {
+    public entry fun add_feed(sender : &signer, price : u128, decimals : u8, last_update : vector<u8>) acquires Aggregator {
         add_feed_(sender, price , decimals, last_update );
     }
 
-    
+    #[cmd]
+    public entry fun get_feed() : (u128, u8, vector<u8>) acquires  Aggregator {
+        let admin_addr = config::ADMIN_ADDRESS();
+
+
+        assert!(exists<Aggregator>(admin_addr), error::not_found(ENOT_INITIALZIED));
+        let aggregator = borrow_global<Aggregator>(admin_addr);
+
+        let token_details_list  = &aggregator.token_details_list;
+
+        
+        let length = vector::length(token_details_list);
+
+        if(length > 0) {
+           let token_details =  vector::borrow<TokenDetails>(token_details_list, length-1);
+
+           (token_details.price, token_details.decimals, token_details.last_update)
+
+        } else {
+             (0 , 0, b"0")
+        }
+    }
+
+
+
+    // #[method]
+    // public fun get_feed() : u64 acquires  Aggregator {
+    //     let admin_addr = config::ADMIN_ADDRESS();
+
+
+    //     assert!(exists<Aggregator>(admin_addr), error::not_found(ENOT_INITIALZIED));
+    //     let aggregator = borrow_global<Aggregator>(admin_addr);
+
+    //     let token_details_list  = &aggregator.token_details_list;
+
+        
+    //     vector::length(token_details_list) 
+
+        
+    // }
 
 }
