@@ -5,7 +5,7 @@ module oracle::tokens{
 
     use std::error;
     use std::signer;
-    use std::debug;
+    //use std::debug;
     use std::string;
 
 
@@ -23,6 +23,7 @@ module oracle::tokens{
         price : u128,
         decimals : u8,
         last_update : string::String,
+
     }
 
 
@@ -38,15 +39,6 @@ module oracle::tokens{
             name : string::utf8(name) ,
             token_details_list : vector::empty()
         });
-
-    }
-
-    public entry fun test() {
-       // debug::print(sender);
-    }
-
-    public entry fun testy(sender : &signer) {
-        debug::print(sender);
     }
 
 
