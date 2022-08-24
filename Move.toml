@@ -11,4 +11,4 @@ subdir = 'aptos-move/framework/aptos-framework'
 
 [addresses]
 AptosFramework="0x1"
-oracle="0xE96492A1B4527F7EA41DAFE83584103E05F3D557AD751A7B8C35B87815001B2B"
+oracle="0xe96492a1b4527f7ea41dafe83584103e05f3d557ad751a7b8c35b87815001b2b"
