@@ -8,19 +8,19 @@ module oracle::token_test {
 
     #[test(source = @oracle)]
     public fun initialize_test(source : &signer) {
-        tokens::initialize(source,1,b"ETH_Price");
+        tokens::initialize(source,1,b"ETH_Price", b"ETH");
     }
 
     #[test(source = @oracle)]
     public fun add_feed_test(source : &signer) {
-        tokens::initialize(source,1,b"ETH_Price");
+        tokens::initialize(source,1,b"ETH_Price", b"ETH");
         tokens::add_feed(source, 180990909090, 8, b"20220817")
     }
 
 
         #[test(source = @oracle)]
     public fun get_feed_test(source : &signer) {
-        tokens::initialize(source,1,b"ETH_Price");
+        tokens::initialize(source,1,b"ETH_Price", b"ETH");
         tokens::add_feed(source, 180990909090, 8, b"20220817");
         let (price ,decimals, last_update ) = tokens::get_feed();
 

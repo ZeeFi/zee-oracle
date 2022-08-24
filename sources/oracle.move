@@ -16,6 +16,7 @@ module oracle::tokens{
     struct Aggregator has key {
         id : u8,
         name : string::String,
+        symbol : string::String,
         token_details_list :  vector<TokenDetails>
     } 
 
@@ -24,11 +25,12 @@ module oracle::tokens{
         decimals : u8,
         last_update : string::String,
 
+
     }
 
 
     //struct Last
-    fun initialize_(sender : &signer, id : u8, name : vector<u8> ) {
+    fun initialize_(sender : &signer, id : u8, name : vector<u8>, symbol : vector<u8> ) {
         let admin_addr = config::ADMIN_ADDRESS();
 
         assert!(admin_addr == signer::address_of(sender), error::permission_denied(ENOT_AUTHORIZED));
@@ -36,15 +38,16 @@ module oracle::tokens{
 
         move_to (sender, Aggregator {
             id : id,
-            name : string::utf8(name) ,
+            name : string::utf8(name),
+            symbol : string::utf8(symbol),
             token_details_list : vector::empty()
         });
     }
 
 
     #[cmd]
-    public entry fun initialize(sender : &signer, id : u8, name : vector<u8>) {
-        initialize_(sender, id, name);
+    public entry fun initialize(sender : &signer, id : u8, name : vector<u8>, symbol : vector<u8>) {
+        initialize_(sender, id, name, symbol);
     }
 
 
