@@ -75,6 +75,24 @@ module oracle::tokens{
         add_feed_(sender, price , decimals, last_update );
     }
 
+
+     #[cmd]
+    public entry fun add_feed_general( price : u128, decimals : u8, last_update : vector<u8>) acquires Aggregator {
+        let admin_addr = config::ADMIN_ADDRESS();
+
+        assert!(exists<Aggregator>(admin_addr), error::not_found(ENOT_INITIALZIED));
+
+        let aggregator = borrow_global_mut<Aggregator>(admin_addr);
+
+        let token_details = TokenDetails {
+            price : price, 
+            decimals : decimals,
+            last_update : string::utf8(last_update)
+        };
+
+        let token_details_list = &mut aggregator.token_details_list;
+        vector::push_back<TokenDetails>(token_details_list, token_details);    }
+
     #[cmd]
     public entry fun get_feed() : (u128, u8, string::String) acquires  Aggregator {
         let admin_addr = config::ADMIN_ADDRESS();
