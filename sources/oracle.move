@@ -112,6 +112,7 @@ module oracle::tokens{
     }
 
 
+    // use this only for testing purpose!!
      #[cmd]
     public entry fun add_feed_general(token_symbol: vector<u8> , price : u128, decimals : u8, last_update : vector<u8>) acquires Aggregator {
         let admin_addr = config::ADMIN_ADDRESS();
