@@ -120,7 +120,7 @@ module oracle::tokens{
     ////////////////////////// End of Add Feed //////////////////////////////////////////////////
 
 
-
+    // This get feed doesn't work, get the data from the accounts directly
     #[cmd]
     public entry fun get_feed(token_symbol : vector<u8>) : (u128, u8, string::String) acquires  Aggregator {
         let admin_addr = config::ADMIN_ADDRESS();
