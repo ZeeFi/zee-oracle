@@ -22,7 +22,7 @@ module oracle::tokens{
     } 
 
 
-    struct Token has store {
+    struct Token has key, store {
         name : String,
         symbol : String,
         token_details_list :  vector<TokenDetails> // contains a list of all historical prices
