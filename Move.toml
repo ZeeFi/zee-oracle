@@ -1,5 +1,5 @@
 [package]
-name = 'oracle'
+name = 'ZeeOracle'
 version = '0.0.1'
 
 
@@ -11,4 +11,4 @@ subdir = 'aptos-move/framework/aptos-framework'
 
 [addresses]
 AptosFramework="0x1"
-oracle="0x1e43fa445e9dab7943752a6333d13b02e67e5a297766f4a90d2c9a0e04c3379e"
+oracle="0xda9724a10e323b710f08087951e88b9b2818196f0159a111beb5a394d969416c"
