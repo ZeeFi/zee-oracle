@@ -1,6 +1,6 @@
-module ZeeOracle::config {
+module zee_oracle::config {
 
-    const ADMIN : address = @ZeeOracle;
+    const ADMIN : address = @zee_oracle;
 
 
     public fun ADMIN_ADDRESS() : address {

@@ -1,7 +1,7 @@
-module ZeeOracle::tokens{
+module zee_oracle::tokens{
 
     use std::vector;
-    use ZeeOracle::config;
+    use zee_oracle::config;
 
     use std::error;
     use std::signer;
