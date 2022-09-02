@@ -1,25 +1,25 @@
 #[test_only]
-module oracle::token_test {
+module ZeeOracle::token_test {
 
-    use oracle::tokens;
+    use ZeeOracle::tokens;
     //use std::string;
     use std::debug;
     use std::string;
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     public fun initialize_aggregator_test(sender : &signer) {
         initialize_aggregator(sender);
     }
 
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     public fun initialize_token_test(sender : &signer) {
         initialize_aggregator(sender);
         tokens::initialize_token(sender, b"ETH_Price", b"ETH");
     }
 
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     #[expected_failure]
     public fun initialize_token_fail_test(sender : &signer) {
         tokens::initialize_token(sender, b"ETH_Price", b"ETH");
@@ -27,7 +27,7 @@ module oracle::token_test {
 
     
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     public fun add_feed_test(sender : &signer) {
         initialize_aggregator(sender);
         tokens::initialize_token(sender, b"ETH_Price", b"ETH");
@@ -35,21 +35,21 @@ module oracle::token_test {
     }
 
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     #[expected_failure]
     public fun add_feed_fail_test_1(sender : &signer) {
         tokens::add_feed(sender, b"ETH" ,180990909090, 8, b"20220817")
     }
 
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     #[expected_failure]
     public fun add_feed_fail_test_2(sender : &signer) {
         initialize_aggregator(sender);
         tokens::add_feed(sender, b"ETH" ,180990909090, 8, b"20220817")
     }
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     #[expected_failure]
     public fun add_feed_fail_test_3(sender : &signer) {
         tokens::initialize_token(sender, b"ETH_Price", b"ETH");
@@ -57,7 +57,7 @@ module oracle::token_test {
     }
 
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
     public fun get_feed_test(sender : &signer) {
          initialize_aggregator(sender);
         tokens::initialize_token(sender, b"ETH_Price", b"ETH");
@@ -75,7 +75,7 @@ module oracle::token_test {
     }
 
 
-    #[test(sender = @oracle)]
+    #[test(sender = @ZeeOracle)]
      #[expected_failure]
     public fun get_feed_fail_test(sender : &signer) {
          initialize_aggregator(sender);
