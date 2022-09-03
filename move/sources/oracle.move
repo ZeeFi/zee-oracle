@@ -160,6 +160,32 @@ module zee_oracle::tokens{
     }
 
 
+    public entry fun get_feed_general(token_symbol : vector<u8>): (u128, u8, string::String) acquires Aggregator{
+        let admin_addr = config::ADMIN_ADDRESS();
+
+        debug::print(&admin_addr);
+
+        let aggregator = borrow_global<Aggregator>(admin_addr);
+
+        let tokens = &aggregator.tokens;
+        let contains_key = simple_map::contains_key<String, Token>(tokens, &string::utf8(token_symbol));
+
+        assert!(contains_key, error::not_found(ENOT_INITIALZIED));
+
+        let token = simple_map::borrow<String, Token>(tokens, &string::utf8(token_symbol));
+        let token_details_list  = &token.token_details_list; 
+        let length = vector::length(token_details_list);
+
+        if(length > 0) {
+           let token_details =  vector::borrow<TokenDetails>(token_details_list, length-1);
+
+           (token_details.price, token_details.decimals, token_details.last_update)
+
+        } else {
+             (0 , 0,  string::utf8(b"0"))
+        }
+    }
+
 
    
 
