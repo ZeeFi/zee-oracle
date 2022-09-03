@@ -1,6 +1,6 @@
 module example::oracle{
 
-    use oracle::tokens;
+    use zee_oracle::tokens;
     use std::debug;
     use aptos_framework::string::String;
 

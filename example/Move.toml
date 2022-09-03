@@ -9,7 +9,7 @@ subdir = 'aptos-move/framework/aptos-framework'
 
 [dependencies.ZeeOracle]
 git = 'https://github.com/ZeeFi/zee-oracle.git'
-rev = 'main'
+rev = '82bc480279242bcf8f26be958308e5845376a27c'
 #subdir = ''
 
 
