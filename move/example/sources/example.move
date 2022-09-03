@@ -20,8 +20,8 @@ module example::oracle{
         get_token_price(b"ETH");
     }
 
-    //     #[test()]
-    // public fun get_test() {
-    //     tokens::test_func(b"ETH");
-    // }
+        #[test()]
+    public fun get_test() {
+        tokens::test_func(b"ETH");
+    }
 }
