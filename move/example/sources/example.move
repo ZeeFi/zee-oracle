@@ -14,14 +14,12 @@ module example::oracle{
     }
 
 
+    // This wouldn't work as test framework cannot access real-time data YET, here is the commend from @Magnum6
+    // "If you mean from real data on chain, no. The testing framework never accesses real nodes. Just inside the testing environment, you can initialize resource accounts. It's just that whatever state of the world you want your test to run in, that state has to be re-created for every single test".
+    // #[test()]
+    // public fun get_token_price_test() {
+    //     get_token_price(b"ETH");
+    // }
 
-    #[test()]
-    public fun get_token_price_test() {
-        get_token_price(b"ETH");
-    }
 
-        #[test()]
-    public fun get_test() {
-        tokens::test_func(b"ETH");
-    }
 }
