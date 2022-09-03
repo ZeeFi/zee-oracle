@@ -17,6 +17,6 @@ module example::oracle{
 
     #[test()]
     public fun get_token_price_test() {
-        get_token_price(b"ETH");
+        get_token_price(b"eth");
     }
 }

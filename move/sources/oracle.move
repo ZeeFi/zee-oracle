@@ -5,7 +5,7 @@ module zee_oracle::tokens{
 
     use std::error;
     use std::signer;
-    //use std::debug;
+    use std::debug;
     use std::string::{Self, String};
 
     use aptos_framework::simple_map::{Self, SimpleMap}; 
@@ -125,7 +125,9 @@ module zee_oracle::tokens{
     #[cmd]
     public entry fun get_feed(token_symbol : vector<u8>) : (u128, u8, string::String) acquires  Aggregator {
         let admin_addr = config::ADMIN_ADDRESS();
-        
+
+        debug::print(&admin_addr);
+
         assert!(exists<Aggregator>(admin_addr), error::not_found(ENOT_INITIALZIED));
         let aggregator = borrow_global<Aggregator>(admin_addr);
 
@@ -146,6 +148,15 @@ module zee_oracle::tokens{
         } else {
              (0 , 0,  string::utf8(b"0"))
         }
+    }
+
+
+
+    public entry fun test_func(token_symbol : vector<u8>) {
+        let admin_addr = config::ADMIN_ADDRESS();
+
+        debug::print(&admin_addr);
+        debug::print(&token_symbol);
     }
 
 
